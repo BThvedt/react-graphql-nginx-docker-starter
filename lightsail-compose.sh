@@ -18,7 +18,7 @@ curl -o /srv/starter -LJO https://github.com/BThvedt/react-graphql-nginx-docker-
 
 # copy in systemd unit file and register it so our compose file runs 
 # on system restart
-curl -o /etc/systemd/system/lightsail-app.service https://https://raw.githubusercontent.com/BThvedt/react-graphql-nginx-docker-starter/master/starter/lightsail-app.sh
+curl -o /etc/systemd/system/lightsail-app.service https://raw.githubusercontent.com/BThvedt/react-graphql-nginx-docker-starter/master/lightsail-app.sh
 systemctl enable lightsail-app.service
 
 # start up the application via docker-compose
