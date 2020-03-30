@@ -26,15 +26,22 @@ Where 192.168.99.102 is the IP my docker quickstart terminal runs (which I'm pre
 ### ToDo 
 
 Authentication
+
 SSL layer
+
 Add React Router/Redux to one of the starter apps
+
 Understand Docker files/nginx configuration better
+
 Deployment Example
 
 ### Credits:
 This was a weekend project, starting knowing very little about docker/nginx. Credit goes to these articles: 
 
 [https://dev.to/phuonghau98/yet-another-way-to-containerize-your-react-app-with-docker-multi-stage-build-3n6](https://dev.to/phuonghau98/yet-another-way-to-containerize-your-react-app-with-docker-multi-stage-build-3n6)
+
 [https://dev.to/destrodevshow/docker-201-use-nginx-as-a-proxy-for-nodejs-server-in-2020-practical-guide-57ji](https://dev.to/destrodevshow/docker-201-use-nginx-as-a-proxy-for-nodejs-server-in-2020-practical-guide-57ji)
+
 As well as this repo: https://github.com/akullpp/multiple-react-nginx/blob/master/vm/docker-compose.yml
+
 For providing me guidance/examples to follow to get this up and running.
