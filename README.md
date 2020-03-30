@@ -10,7 +10,9 @@ There is a very basic graphql with express and apollo-server backend
 And an nginx gateway
 
 Fooapp is served from: domainnamehere.com
+
 Barapp is served from: barapp.domainnamehere.com
+
 And the api is served from api.domainnamehere.com
 
 Edit the nginx.conf file in the gateway folder to change to localhost, or your domain name. 
@@ -18,7 +20,9 @@ Edit the nginx.conf file in the gateway folder to change to localhost, or your d
 If you're on Windows home (like me), edit the hosts file in C:\Windows\System32\Drivers\etc\hosts to include these lines:
 
 192.168.99.102 domainnamehere.com
+
 192.168.99.102 barapp.domainnamehere.com
+
 192.168.99.102 api.domainnamehere.com
 
 Where 192.168.99.102 is the IP my docker quickstart terminal runs (which I'm pretty sure you gotta use if you use windows 10 home). You might have to adjust it to your own, there should be a message when the quickstart terminal starts up with the address. 
