@@ -13,8 +13,7 @@ chmod +x /usr/local/bin/docker-compose
 # copy the dockerfile into /srv/starterapp 
 # if you change this, change the systemd service file to match
 # WorkingDirectory=[whatever you have below]
-mkdir /srv/starter
-curl -o /srv/starter -LJO https://github.com/BThvedt/react-graphql-nginx-docker-starter/tree/master/starter
+git clone https://github.com/BThvedt/react-graphql-nginx-docker-starter.git /srv/
 
 # copy in systemd unit file and register it so our compose file runs 
 # on system restart
