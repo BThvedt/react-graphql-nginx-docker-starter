@@ -1,0 +1,7 @@
+{
+  "name": "hello-wrold-server",
+  "dependencies": {
+    "apollo-server": "^2.11.0",
+    "graphql": "^14.6.0"
+  }
+}

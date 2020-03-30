@@ -1,0 +1,35 @@
+version: '3.4'
+
+services: 
+  fooapp:
+    build:
+      context: ./fooapp
+    networks: 
+      - dummynetwork
+   
+  barapp:
+    build:
+      context: ./barapp
+    networks:
+      - dummynetwork
+      
+  api: 
+    build: 
+      context: ./api 
+    networks: 
+      - dummynetwork
+        
+  gateway:
+    build:
+      context: ./gateway
+    ports: 
+      - 80:80
+    networks:
+      - dummynetwork
+    depends_on:
+      - fooapp
+      - barapp
+      - api
+      
+networks:
+  dummynetwork:
