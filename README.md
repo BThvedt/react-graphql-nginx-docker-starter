@@ -3,6 +3,7 @@ This is very much a work in progress. I wanted a starter app with multiple react
 
 To use: Navigate into root folder and run 
 ```
+cd starter
 docker-compose up
 ```
 There are 2 frontends, fooapp and barapp
