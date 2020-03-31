@@ -24,6 +24,11 @@ services:
       context: ./gateway
     ports: 
       - 80:80
+    environment:
+      - FOOAPP_URL=${FOOAPP_URL}
+      - BARAPP_URL=${BARAPP_URL}
+      - API_URL=${API_URL} 
+    # command: /bin/bash -c "envsubst '${FOOAPP_URL},${BARAPP_URL},${API_URL}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf"
     networks:
       - dummynetwork
     depends_on:

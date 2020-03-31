@@ -15,9 +15,16 @@ chmod +x /usr/local/bin/docker-compose
 # WorkingDirectory=[whatever you have below]
 git clone https://github.com/BThvedt/react-graphql-nginx-docker-starter.git /srv/
 
+cat <<EOT >> /srv/starter/.env
+FOOAPP_URL=$FOOAPP_URL
+BARAPP_URL=$BARAPP_URL
+API_URL=$API_URL
+EOT
+
 # copy in systemd unit file and register it so our compose file runs 
 # on system restart
 curl -o /etc/systemd/system/lightsail-app.service https://raw.githubusercontent.com/BThvedt/react-graphql-nginx-docker-starter/master/lightsail-app.sh
+
 systemctl enable lightsail-app.service
 
 # start up the application via docker-compose
