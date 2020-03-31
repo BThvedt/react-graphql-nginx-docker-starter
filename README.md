@@ -60,7 +60,7 @@ Also look for the FOOAPP_URL and BARAPP_URL etc in the docker-compose.yml file (
 
 So you should have made modifications to a total of 3 files. The 3 lightsail shell script files in the root can be ignored... or trashed. They aren't necessary except for the lightsail deployment exmaple. 
 
-Then once everything is on the server, a simple ```docker-compose up``` should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains.
+Then once everything is on the server, a simple ```docker-compose up``` should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains once you've got the DNS side handeled (you're on your own for that one!).
 
 
 ### ToDo 
