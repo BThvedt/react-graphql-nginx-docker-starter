@@ -39,7 +39,9 @@ For your instance, choose Ubuntu 16.04 (for some reason 18.04 doesn't work for m
 Once running, go into your instance and under the networking tab attach a static IP. You can also connect using ssh and running docker container ls to see if all 4 containers are running, they should be. Point your domain to the static IP including the subdomains, or if you're like me on windows edit Windows/System32/drivers/etc/hosts to indlude (assuming your static IP you just attached is 123.45.678.91)
 
 123.45.678.91 yourdomain.com
+
 123.45.678.91 barapp.yourdomain.com (or whatever you called it)
+
 123.45.678.91 api.yourdomain.com
 
 And see it live! 
@@ -49,7 +51,9 @@ And see it live!
 Chances are your front ends aren't called 'fooapp' and 'barapp'. Docker compose starts up it's network in a pretty simple pattern, so it's pretty easy to figure out how the proxy passes will work. Once your files are pulled down go into the .env file in the root and add your domains like this:
 
 YOURAPP_URL="yourdomain.com"
+
 SECOND_APP_URL="subdomain.yourdomain.com"
+
 API_URL="yourapisubdomain.yourdomain.com" 
 
 Also look for the FOOAPP_URL and BARAPP_URL etc in the docker-compose.yml file (they each come up twice) and switch them all to the new variable names. Assuming you named the folders something else instead of 'fooapp' and 'barapp' go into gateway nginx.template and change the proxy_pass statements to match your new pattern. Also be sure to replace the environment variables there too of course. 
