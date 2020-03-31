@@ -36,7 +36,7 @@ You might have to click around the UI or watch a tutoral to do someo of this stu
 
 For your instance, choose Ubuntu 16.04 (for some reason 18.04 doesn't work for me.. todo: figure out why) and find where it asks for the launch script. Copy/paste the contents of lightsail-startup-script.sh, changing the "domainnamehere.com" lines to whatever your desired domain name is. Hit create, and wait a few mins, the containers don't start up right away.
 
-Once running, go into your instance and under the networking tab attach a static IP. You can also connect using ssh and running docker container ls to see if all 4 containers are running, they should be. Point your domain to the static IP including the subdomains, or if you're like me on windows edit Windows/System32/drivers/etc/hosts to indlude (assuming your static IP you just attached is 123.45.678.91)
+Once running, go into your instance and under the networking tab attach a static IP. You can also connect using ssh and running docker container ls to see if all 4 containers are running, they should be. Point your domain to the static IP including the subdomains, or if you're like me on windows and want to see it right away (or haven't got a spare domain name lying around) edit Windows/System32/drivers/etc/hosts to indlude (assuming your static IP you just attached is 123.45.678.91)
 
 123.45.678.91 yourdomain.com
 
