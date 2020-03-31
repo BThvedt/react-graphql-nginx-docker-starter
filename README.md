@@ -28,7 +28,7 @@ If you're on Windows home (like me), edit the hosts file in C:\Windows\System32\
 
 Where 192.168.99.102 is the IP my docker quickstart terminal runs (which I'm pretty sure you gotta use if you use windows 10 home). You might have to adjust it to your own, there should be a message when the quickstart terminal starts up with the address. 
 
-### Deployment example 
+### Deployment example with AWS Lightsail
 
 In this example I will be deploying to AWS lightsail. If you have an AWS account, go to lightsail and select the second smallest instance with 1GB memory. The smallest unfortinately will run out of memory when docker builds it's containers, or at least it does for me.
 
