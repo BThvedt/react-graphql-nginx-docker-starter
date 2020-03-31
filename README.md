@@ -28,6 +28,35 @@ If you're on Windows home (like me), edit the hosts file in C:\Windows\System32\
 
 Where 192.168.99.102 is the IP my docker quickstart terminal runs (which I'm pretty sure you gotta use if you use windows 10 home). You might have to adjust it to your own, there should be a message when the quickstart terminal starts up with the address. 
 
+### Deployment example 
+
+In this example I will be deploying to AWS lightsail. If you have an AWS account, go to lightsail and select the second smallest instance with 1GB memory. The smallest unfortinately will run out of memory when docker builds it's containers, or at least it does for me.
+
+You might have to click around the UI or watch a tutoral to do someo of this stuff, but it's one of Amazon's more friendly UI's.
+
+For your instance, choose Ubuntu 16.04 (for some reason 18.04 doesn't work for me.. todo: figure out why) and find where it asks for the launch script. Copy/paste the contents of lightsail-startup-script.sh, changing the "domainnamehere.com" lines to whatever your desired domain name is. Hit create, and wait a few mins, the containers don't start up right away.
+
+Once running, go into your instance and under the networking tab attach a static IP. You can also connect using ssh and running docker container ls to see if all 4 containers are running, they should be. Point your domain to the static IP including the subdomains, or if you're like me on windows edit Windows/System32/drivers/etc/hosts to indlude (assuming your static IP you just attached is 123.45.678.91)
+
+123.45.678.91 yourdomain.com
+123.45.678.91 barapp.yourdomain.com (or whatever you called it)
+123.45.678.91 api.yourdomain.com
+
+And see it live! 
+
+### Actual Deployment
+
+Chances are your front ends aren't called 'fooapp' and 'barapp'. Docker compose starts up it's network in a pretty simple pattern, so it's pretty easy to figure out how the proxy passes will work. Once your files are pulled down go into the .env file in the root and add your domains like this:
+
+YOURAPP_URL="yourdomain.com"
+SECOND_APP_URL="subdomain.yourdomain.com"
+API_URL="yourapisubdomain.yourdomain.com" 
+
+Also look for the FOOAPP_URL and BARAPP_URL etc in the docker-compose.yml file (they each come up twice) and switch them all to the new variable names. Assuming you named the folders something else instead of 'fooapp' and 'barapp' go into gateway nginx.template and change the proxy_pass statements to match your new pattern. Also be sure to replace the environment variables there too of course. 
+
+Then once everything is on the server, a simple docker-compose up should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains.
+
+
 ### ToDo 
 
 Authentication
@@ -37,8 +66,6 @@ SSL layer
 Add React Router/Redux to one of the starter apps
 
 Understand Docker files/nginx configuration better
-
-Deployment Example
 
 ### Credits:
 This was a weekend project, starting knowing very little about docker/nginx. Credit goes to these articles: 
