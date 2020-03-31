@@ -28,7 +28,7 @@ services:
       - FOOAPP_URL=${FOOAPP_URL}
       - BARAPP_URL=${BARAPP_URL}
       - API_URL=${API_URL} 
-    # command: /bin/bash -c "envsubst '${FOOAPP_URL},${BARAPP_URL},${API_URL}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf"
+    command: /bin/bash -c "envsubst '$${FOOAPP_URL},$${BARAPP_URL},$${API_URL}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     networks:
       - dummynetwork
     depends_on:
