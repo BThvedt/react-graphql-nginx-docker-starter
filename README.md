@@ -58,7 +58,7 @@ API_URL="yourapisubdomain.yourdomain.com"
 
 Also look for the FOOAPP_URL and BARAPP_URL etc in the docker-compose.yml file (they each come up twice) and switch them all to the new variable names. Assuming you named the folders something else instead of 'fooapp' and 'barapp' go to gateway/nginx.template and change the proxy_pass statements to match your new pattern. Also be sure to replace the environment variables there too of course. 
 
-So you should have made modifications to a total of 3 files. The 3 lightsail shell script files in the root can be ignored... or trashed. They aren't necessary except for the lightsail deployment exmaple. 
+So you should have made modifications to a total of 3 files: the .env in the root, the starter/gateway/nginx.template file, and the starter/docker-compose.yml file, plus maybe renamed some of the folders to suit your needs. The 3 lightsail shell script files in the root can be ignored... or trashed. They aren't necessary except for the lightsail deployment exmaple. 
 
 Then once everything is on the server, a simple ```docker-compose up``` should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains once you've got the DNS side handeled (you're on your own for that one!).
 
