@@ -17,3 +17,7 @@ const server = new ApolloServer({ typeDefs, resolvers });
 server
   .listen({ port: 80 })
   .then(({ url }) => console.log(`Server running at ${url}`));
+
+server
+  .listen({ port: 443 })
+  .then(({ url }) => console.log(`Server running at ${url}`));
