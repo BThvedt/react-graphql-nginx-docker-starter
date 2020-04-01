@@ -10,6 +10,7 @@ http {
 		server_name ${FOOAPP_URL};
 
         #location / {
+        #    proxy_set_header        X-Forwarded-Proto $scheme;
         #    proxy_pass http://starter_fooapp_1/;  
         #}
         return 301 https://$host$request_uri;
@@ -20,6 +21,7 @@ http {
 		server_name ${FOOAPP_URL};
 
         location / {
+            proxy_set_header        X-Forwarded-Proto $scheme;
             proxy_pass http://starter_fooapp_1/;  
         }
     }
@@ -29,6 +31,7 @@ http {
 		server_name ${BARAPP_URL};
 
         #location / {
+        #    proxy_set_header        X-Forwarded-Proto $scheme;    
         #    proxy_pass http://starter_barapp_1/;
         #}
 
@@ -40,6 +43,7 @@ http {
 		server_name ${BARAPP_URL};
 
         location / {
+            proxy_set_header        X-Forwarded-Proto $scheme;
             proxy_pass http://starter_barapp_1/;
         }
     }
