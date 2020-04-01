@@ -26,5 +26,26 @@ http {
         }
     }
 	
+    server {
+        listen 80;
+		server_name ${BARAPP_URL};
+
+        if ($http_x_forwarded_proto != "https") {
+            rewrite ^(.*)$ https://${BARAPP_URL}$1 permanent;
+        }
+
+        location / { 
+            proxy_pass http://starter_barapp_1/;
+        }
+    }
+
+    server {
+        listen 443;
+		server_name ${BARAPP_URL};
+
+        location / {
+            proxy_pass http://starter_barapp_1/;
+        }
+    }
 
 }
