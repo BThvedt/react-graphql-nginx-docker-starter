@@ -1,33 +1,34 @@
-version: '3.4'
+version: "3.4"
 
-services: 
+services:
   fooapp:
     build:
       context: ./fooapp
-    networks: 
+    networks:
       - dummynetwork
-   
+
   barapp:
     build:
       context: ./barapp
     networks:
       - dummynetwork
-      
-  api: 
-    build: 
-      context: ./api 
-    networks: 
+
+  api:
+    build:
+      context: ./api
+    networks:
       - dummynetwork
-        
+
   gateway:
     build:
       context: ./gateway
-    ports: 
+    ports:
       - 80:80
+      - 443:443
     environment:
       - FOOAPP_URL=${FOOAPP_URL}
       - BARAPP_URL=${BARAPP_URL}
-      - API_URL=${API_URL} 
+      - API_URL=${API_URL}
     command: /bin/bash -c "envsubst '$${FOOAPP_URL},$${BARAPP_URL},$${API_URL}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     networks:
       - dummynetwork
@@ -35,6 +36,6 @@ services:
       - fooapp
       - barapp
       - api
-      
+
 networks:
   dummynetwork:
