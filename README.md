@@ -60,14 +60,16 @@ Also look for the FOOAPP_URL and BARAPP_URL etc in the docker-compose.yml file (
 
 So you should have made modifications to a total of 3 files: the .env in the root, the starter/gateway/nginx.template file, and the starter/docker-compose.yml file, plus maybe renamed some of the folders to suit your needs. The 3 lightsail shell script files in the root can be ignored... or trashed. They aren't necessary except for the lightsail deployment exmaple. 
 
-Then once everything is on the server, a simple ```docker-compose up``` should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains once you've got the DNS side handeled (you're on your own for that one!).
+Then once everything is on the server, a simple ```docker-compose up``` should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains once you've got the DNS side of things handeled (you're on your own for that one!).
+
+### SSL
+
+Keeping with the lightsail demo, I use a lightsail load balancer to handle the SSL certificate. AWS has pretty straigtforward directions. Once you've got the load balancer set up for ssl, re-upload (or fork and modify the startup .sh scrips to pull from the fork) with the 'if ($http_x_forwarded_proto != "https")' blocks un-commented to enforce https. There are other ways to configure SSL and nginx, this way was done specifically with the load balancer in mind. 
 
 
 ### ToDo 
 
 Authentication
-
-SSL layer
 
 Add React Router/Redux to one of the starter apps
 
