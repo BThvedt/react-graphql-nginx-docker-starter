@@ -2,6 +2,13 @@
   "name": "hello-wrold-server",
   "dependencies": {
     "apollo-server": "^2.11.0",
-    "graphql": "^14.6.0"
+    "bcrypt": "^4.0.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "graphql": "^14.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "randomstring": "^1.1.5"
   }
 }

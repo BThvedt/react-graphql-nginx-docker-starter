@@ -1,0 +1,24 @@
+type User {
+  id: ID
+  username: String
+  email: String
+  password: String
+  roles: [String]
+}
+
+type Token {
+  token: String!
+}
+
+type Query {
+  helloWorld: String
+  getCurrentUser: User
+  protectedQuery: String
+  getEmail: String
+}
+
+type Mutation {
+  signup(username: String!, email: String!, password: String!): Boolean
+  signin(email: String!, password: String!): User
+  signout: Boolean
+}
