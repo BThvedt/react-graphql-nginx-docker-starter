@@ -9,7 +9,8 @@ const cors = require("cors");
 
 const jwtSecret = "superSecretJwtSecret";
 const corsOptions = {
-  origin: "http://localhost:3000",
+  // origin: "http://localhost:3000",
+  origin: "http://coursebuilder.ninja",
   credentials: true, // <-- REQUIRED backend setting
 };
 
