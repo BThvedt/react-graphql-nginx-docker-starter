@@ -6,14 +6,17 @@ const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-
 const jwtSecret = "superSecretJwtSecret";
+
+// const jwtSecret = "superSecretJwtSecret";
 var whitelist = [
   "https://coursebuilder.ninja",
   "https://barapp.coursebuilder.ninja",
 ];
+// whitelist = ["http://docker.ninja", "http://admin.docker.ninja"];
 const corsOptions = {
   //origin: "http://localhost:3000",
+  //origin: "http://docker.ninja",
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);

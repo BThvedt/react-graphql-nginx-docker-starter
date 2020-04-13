@@ -14,6 +14,7 @@ const authenticateByRole = (role) => (next) => (root, args, context, info) => {
   // if you implement permissions per role, a similar function could be used
   // there could be a way to do this with graphql directives and modules but I haven't done it yet
   // https://medium.com/the-guild/authentication-and-authorization-in-graphql-and-how-graphql-modules-can-help-fadc1ee5b0c2
+
   if (context.currentUser.roles && !context.currentUser.roles.includes(role)) {
     throw new Error("Unauthorized!");
   }

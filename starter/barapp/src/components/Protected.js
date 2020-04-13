@@ -3,7 +3,9 @@ import { PROTECTED_QUERY } from "../graphql/queries";
 import { useQuery } from "@apollo/react-hooks";
 
 const Protected = () => {
-  const { data: { protectedQuery: result } = "" } = useQuery(PROTECTED_QUERY);
+  const { data: { protectedBarQuery: result } = "" } = useQuery(
+    PROTECTED_QUERY
+  );
   return (
     <>
       <h1>Protected</h1>
