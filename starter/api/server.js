@@ -8,9 +8,19 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const jwtSecret = "superSecretJwtSecret";
+var whitelist = [
+  "https://coursebuilder.ninja",
+  "https://barapp.coursebuilder.ninja",
+];
 const corsOptions = {
   //origin: "http://localhost:3000",
-  origin: "https://coursebuilder.ninja",
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true, // <-- REQUIRED backend setting
 };
 
