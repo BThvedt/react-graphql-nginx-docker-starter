@@ -1,14 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./App.scss";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+
+let httpUrl = "http://localhost";
+
+if (process.env.NODE_ENV == "production") {
+  httpUrl = process.env.REACT_APP_API_URL;
+}
+
+const link = new HttpLink({ uri: httpUrl, credentials: "include" });
+
+const client = new ApolloClient({
+  cache: new InMemoryCache({
+    dataIdFromObject: (o) => o.id,
+  }),
+  link,
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <Router>
+        <Route path="/" component={App}></Route>
+      </Router>
+    </ApolloProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

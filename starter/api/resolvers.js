@@ -30,6 +30,10 @@ module.exports = {
       (root, args, context) =>
         "Only users with role Foouser will get this result back from the server"
     ),
+    protectedBarQuery: authenticateByRole("baruser")(
+      (root, args, context) =>
+        "Only users with role Baruser will get this result back from the server"
+    ),
   },
   Mutation: {
     signin: async (_, { email, password }, { req, res }) => {

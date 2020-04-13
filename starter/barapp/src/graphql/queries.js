@@ -34,6 +34,6 @@ export const SIGN_OUT = gql`
 
 export const PROTECTED_QUERY = gql`
   query {
-    protectedQuery
+    protectedBarQuery
   }
 `;
