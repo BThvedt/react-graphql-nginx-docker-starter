@@ -47,7 +47,7 @@ module.exports = {
     __resolveType(obj, context, info) {
       if (
         process.env.NODE_ENV !== "local" &&
-        process.env.NODE_ENv !== "production"
+        process.env.NODE_ENV !== "production"
       ) {
         return "Token";
       } else {
