@@ -14,16 +14,25 @@ const Signin = (props) => {
   const history = useHistory();
 
   const [signInUser] = useMutation(SIGNIN_USER, {
-    onCompleted(data) {
+    async onCompleted(data) {
       setError(null);
-      const { signin: user } = data;
+      const { signin: result } = data;
 
-      client.writeQuery({
-        query: GET_USER,
-        data: {
-          getCurrentUser: user,
-        },
-      });
+      if (process.env.NODE_ENV === "development") {
+        // in development environment this mutation returns a token
+        localStorage.setItem("token", result.token);
+        client.query({
+          query: GET_USER,
+          fetchPolicy: "network-only",
+        });
+      } else {
+        client.writeQuery({
+          query: GET_USER,
+          data: {
+            getCurrentUser: result.user,
+          },
+        });
+      }
 
       history.push("/");
     },

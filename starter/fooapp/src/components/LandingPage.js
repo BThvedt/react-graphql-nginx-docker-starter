@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_USER } from "../graphql/queries";
 import AppContext from "../AppContext";
+import { DEFAULT_USER } from "../lib/defaults.js";
 
 const LandingPage = (props) => {
-  const { data: { getCurrentUser: user } = {} } = useQuery(GET_USER);
+  const { data: { getCurrentUser: user } = DEFAULT_USER } = useQuery(GET_USER);
   const { signout } = useContext(AppContext);
 
   return (

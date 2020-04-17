@@ -8,17 +8,28 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const jwtSecret = "superSecretJwtSecret";
 
-// const jwtSecret = "superSecretJwtSecret";
-var whitelist = [
-  "https://coursebuilder.ninja",
-  "https://barapp.coursebuilder.ninja",
-];
-// whitelist = ["http://docker.ninja", "http://admin.docker.ninja"];
+console.log(process.env.NODE_ENV);
+console.log(process.env);
+
+let enforceCors = true;
+let useCookie = true;
+let whitelist;
+
+if (process.env.NODE_ENV != "local" && process.env.NODE_ENV != "production") {
+  enforceCors = false;
+  useCookie = false;
+} else {
+  enforceCors = true;
+  whitelist = [
+    `http://${process.env.FOOAPP_URL}`,
+    `http://${process.env.BARAPP_URL}`,
+    `http://${process.env.API_URL}`,
+  ];
+}
+
 const corsOptions = {
-  //origin: "http://localhost:3000",
-  //origin: "http://docker.ninja",
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    if (!enforceCors || whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -46,8 +57,6 @@ const getUser = async (token) => {
       return result;
     } catch (err) {
       // return null user or maybe throw error (apollo server has a AuthenticationError)
-      console.log(err);
-      console.log(typeof err);
       return null;
     }
   }
@@ -58,16 +67,37 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req, res }) => {
-    return { req, res, currentUser: await getUser(req.cookies["jwt"]) };
+    if (useCookie) {
+      return { req, res, currentUser: await getUser(req.cookies["jwt"]) };
+    } else {
+      return {
+        req,
+        res,
+        currentUser: await getUser(req.headers["authorization"]),
+      };
+    }
   },
 });
 
 server.applyMiddleware({ app, cors: false, path: "/" });
 
-app.listen(80, () => {
-  console.log(`Server running at 80`);
-});
-
-app.listen(443, () => {
-  console.log(`Server running at 443`);
-});
+if (
+  process.env.NODE_ENV === "local" ||
+  (process.env.NODE_ENV === "production" && process.env.HTTPS !== "true")
+) {
+  app.listen(80, () => {
+    console.log(`Server running at 80`);
+  });
+} else if (
+  process.env.NODE_ENV === "production" &&
+  process.env.HTTPS === "true"
+) {
+  app.listen(443, () => {
+    console.log(`Server running at 443`);
+  });
+} else {
+  // dev environment
+  app.listen(9000, () => {
+    console.log(`Server running at 9000`);
+  });
+}

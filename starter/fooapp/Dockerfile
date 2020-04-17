@@ -1,6 +1,8 @@
 FROM node:alpine as builder
 WORKDIR /app
 COPY . ./
+ARG API_URL
+ENV REACT_APP_API_URL=$API_URL
 RUN npm install
 RUN npm run build
 

@@ -18,8 +18,13 @@ type Query {
   getEmail: String
 }
 
+# So, depending on the environment, I want to either get back a user or a token
+# Tokens are much more useful in development, since they can be used in the playground as a header
+# In production, only a secure httpcookie will do. In dev, we gotta get this token on the fronend
+union SigninResult = User | Token
+
 type Mutation {
   signup(username: String!, email: String!, password: String!): Boolean
-  signin(email: String!, password: String!): User
+  signin(email: String!, password: String!): SigninResult
   signout: Boolean
 }

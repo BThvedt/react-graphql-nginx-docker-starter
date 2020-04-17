@@ -3,9 +3,14 @@ import gql from "graphql-tag";
 export const SIGNIN_USER = gql`
   mutation($email: String!, $password: String!) {
     signin(email: $email, password: $password) {
-      id
-      username
-      roles
+      ... on User {
+        id
+        username
+        roles
+      }
+      ... on Token {
+        token
+      }
     }
   }
 `;

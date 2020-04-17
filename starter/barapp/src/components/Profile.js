@@ -1,10 +1,11 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { GET_EMAIL, GET_USER } from "../graphql/queries";
+import { DEFAULT_USER } from "../lib/defaults.js";
 
 const Profile = () => {
   // We will have a user since this route is protected
-  const { data: { getCurrentUser: user } = {} } = useQuery(GET_USER);
+  const { data: { getCurrentUser: user } = DEFAULT_USER } = useQuery(GET_USER);
   // get email runs every time, because I don't want to store it client side longer than I have to
   const { loading, data: { getEmail: email } = "" } = useQuery(GET_EMAIL, {
     fetchPolicy: "no-cache",
