@@ -79,6 +79,7 @@ const server = new ApolloServer({
   },
 });
 
+// server has it's own idea of 'cors' .. make sure it doesn't get in the way of more desired cors settings
 server.applyMiddleware({ app, cors: false, path: "/" });
 
 if (

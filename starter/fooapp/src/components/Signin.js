@@ -29,7 +29,7 @@ const Signin = (props) => {
         client.writeQuery({
           query: GET_USER,
           data: {
-            getCurrentUser: result.user,
+            getCurrentUser: result,
           },
         });
       }
