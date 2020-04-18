@@ -1,87 +1,50 @@
+## Overview
+Very much a work in progress, this project is my desire to have a starter for a web platform with multiple frontends, a single api gateway that can be built on top of that can then be connected to whatever services or microservices to my heart's desire. Also I wanted it to be modular so each section can be worked on independently, and deployable in minutes, with baked-in auth and HTTPS. It should be scalable, easy to hook into other hosted services or microservices, and all those good things.
+What this is then, is two very simple react apps built with create-react-app, an Apolloserver/express api gateway with all the those things.. the baked in auth, the HTTPS, etc etc that's designed to be deployed to Amazon's lighsail.
+I'm at a stopping point for now, working on a more customized version to my taste on my private repo, but more could be done to this. 
+
+## To Do
+Modularize the graphql code, maybe include subscriptions, find a better method other than puliing code off a public repo (undeseriable in real project) maybe figure out how to include instructions to make an image on dockerhub and pull from there or something... 
+But I don't want to get too complicated! Also it won't work on Ubuntu 18 (only 16) and I haven't figured out why yet
+
 ## Usage
 This is very much a work in progress. I wanted a starter app with multiple react front-ends, a graphql backend, and nginx as a gateway.  There is more to do .. 
 
-To use: Navigate into root folder and run 
+To try out (locally): Navigate into starter folder and paste into the .env file some basic variables to configure everything:
 ```
-cd starter
+FOOAPP_URL=domainnamehere.com
+BARAPP_URL=barapp.domainnamehere.com
+API_URL=api.domainnamehere.com
+NODE_ENV=local
+HTTPS=false
+```
+If you're on Windows 10 home like I am, you'll need Docker Toolbox. Use notepad and map whatever names you chose for the URL's to whatever IP your docker toolbox runs on in your hosts file buried in windows folders C:\Windows\System32\Drivers\etc\hosts. It's not a text file so you gotta search for "files". Mine looks something like this
+```
+192.168.99.102 domainnamehere.com
+192.168.99.102 barapp.domainnamehere.com
+192.168.99.102 api.domainnamehere.com
+```
+You probably will have to run notepad as an administrator. On Mac and Linux I don't know quite how to do this but I'm pretty sure you'll probably be able to use localhost and subdomains since docker just runs on localhost for those.
+
+Then, in docker toolbox (or the command line if you're not on windows home) go into the starter folder and run 
+```
 docker-compose up
 ```
-There are 2 frontends, fooapp and barapp
-There is a very basic graphql with express and apollo-server backend
-And an nginx gateway
+Bingo! After everything starts you should be able to navigate to the urls you set up and see 'fooapp' and 'barapp' and you should be able to sign in and out of each. Because the auth is using cookies, singing into one app will sign you into both, but each one has an example of a route that's protected on the front and back end available only to 'foouser' or 'baruser'.
 
-Fooapp is served from: domainnamehere.com
+## Development
+First, make a new repo of your own, push the starter code to it, and now you've got your own project. Each react app can be run in development mode wtih ```npm start``` inside their respective root folders and you can also go into the api gateway folder and run ```node server```  (or more preferbilly with nodemon if you install that) to spin that up. You do kinda go into the folders and all the files and change the names to what you want. In development mode, the auth switches from cookie based to tolken based to make authenticated queries easier, and the graphql playgrond can be accessed at localhost:9000 when the gateway is running. The apps run at localhost:3000 and localhost:4000 when you start them up.
 
-Barapp is served from: barapp.domainnamehere.com
+## Deployment
+I am using Amazon Lightsail - an easy to use hosting service. I believe that this can be spun up and pretty heavily scaled with only basic services like this. So to deploy, go get an AWS account, configure a domain and some subdomains, go into lightsail, create a static IP, and then get ready to start up. If you want HTTPS you'll have to configure a load-balancer and point your domain at that, but it's easy to do on Lightsail and Amazon has a blog on how to do it.
 
-And the api is served from api.domainnamehere.com
-
-Edit the nginx.conf file in the gateway folder to change to localhost, or your domain name. 
-
-If you're on Windows home (like me), edit the hosts file in C:\Windows\System32\Drivers\etc\hosts to include these lines:
-
-192.168.99.102 domainnamehere.com
-
-192.168.99.102 barapp.domainnamehere.com
-
-192.168.99.102 api.domainnamehere.com
-
-Where 192.168.99.102 is the IP my docker quickstart terminal runs (which I'm pretty sure you gotta use if you use windows 10 home). You might have to adjust it to your own, there should be a message when the quickstart terminal starts up with the address. 
-
-### Deployment example with AWS Lightsail
-
-In this example I will be deploying to AWS lightsail. If you have an AWS account, go to lightsail and select the second smallest instance with 1GB memory. The smallest unfortinately will run out of memory when docker builds it's containers, or at least it does for me.
-
-You might have to click around the UI or watch a tutoral to do someo of this stuff, but it's one of Amazon's more friendly UI's.
-
-For your instance, choose Ubuntu 16.04 (for some reason 18.04 doesn't work for me.. todo: figure out why) and find where it asks for the launch script. Copy/paste the contents of lightsail-startup-script.sh, changing the "domainnamehere.com" lines to whatever your desired domain name is. Hit create, and wait a few mins, the containers don't start up right away.
-
-Once running, go into your instance and under the networking tab attach a static IP. You can also connect using ssh and running docker container ls to see if all 4 containers are running, they should be. Point your domain to the static IP including the subdomains, or if you're like me on windows and want to see it right away (or haven't got a spare domain name lying around) edit Windows/System32/drivers/etc/hosts to indlude (assuming your static IP you just attached is 123.45.678.91)
-
-123.45.678.91 yourdomain.com
-
-123.45.678.91 barapp.yourdomain.com (or whatever you called it)
-
-123.45.678.91 api.yourdomain.com
-
-And see it live! 
-
-### Actual Deployment
-
-Chances are your front ends aren't called 'fooapp' and 'barapp'. Docker compose starts up it's network in a pretty simple pattern, so it's pretty easy to figure out how the proxy passes will work. Once your files are pulled down go into the .env file in the root and add your domains like this:
-
-YOURAPP_URL="yourdomain.com"
-
-SECOND_APP_URL="subdomain.yourdomain.com"
-
-API_URL="yourapisubdomain.yourdomain.com" 
-
-Also look for the FOOAPP_URL and BARAPP_URL etc in the docker-compose.yml file (they each come up twice) and switch them all to the new variable names. Assuming you named the folders something else instead of 'fooapp' and 'barapp' go to gateway/nginx.template and change the proxy_pass statements to match your new pattern. Also be sure to replace the environment variables there too of course. 
-
-So you should have made modifications to a total of 3 files: the .env in the root, the starter/gateway/nginx.template file, and the starter/docker-compose.yml file, plus maybe renamed some of the folders to suit your needs. The 3 lightsail shell script files in the root can be ignored... or trashed. They aren't necessary except for the lightsail deployment exmaple. 
-
-Then once everything is on the server, a simple ```docker-compose up``` should do the trick! Make sure port 80 is exposed and you should be able to navagite between the apps and the api via subdomains once you've got the DNS side of things handeled (you're on your own for that one!).
-
-### SSL
-
-Keeping with the lightsail demo, I use a lightsail load balancer to handle the SSL certificate. AWS has pretty straigtforward directions. Once you've got the load balancer set up for ssl, re-upload (or fork and modify the startup .sh scrips to pull from the fork) with the 'if ($http_x_forwarded_proto != "https")' blocks un-commented to enforce https. There are other ways to configure SSL and nginx, this way was done specifically with the load balancer in mind. 
-
-
-### ToDo 
-
-Authentication
-
-Add React Router/Redux to one of the starter apps
-
-Understand Docker files/nginx configuration better
-
-### Credits:
-This was a weekend project, starting knowing very little about docker/nginx. Credit goes to these articles: 
-
-[https://dev.to/phuonghau98/yet-another-way-to-containerize-your-react-app-with-docker-multi-stage-build-3n6](https://dev.to/phuonghau98/yet-another-way-to-containerize-your-react-app-with-docker-multi-stage-build-3n6)
-
-[https://dev.to/destrodevshow/docker-201-use-nginx-as-a-proxy-for-nodejs-server-in-2020-practical-guide-57ji](https://dev.to/destrodevshow/docker-201-use-nginx-as-a-proxy-for-nodejs-server-in-2020-practical-guide-57ji)
-
-As well as this repo: https://github.com/akullpp/multiple-react-nginx/blob/master/vm/docker-compose.yml
-
-For providing me guidance/examples to follow to get this up and running.
+When you start up your instance, choose Ubuntu 16.06 and copy the contents of the lightsail-startup-script.sh file into the section where it says startup script. Change the lines where it exports variables to your own values like this:
+```
+FOOAPP_URL=domainnamehere.com
+BARAPP_URL=barapp.domainnamehere.com
+API_URL=api.domainnamehere.com
+NODE_ENV=production
+HTTPS=false
+```
+Make sure you chooe the $5/month instance or greater, as the cheapest instance doesn't have enough memory to start up the various docker containers. 
+If you want HTTPS, change "HTTPS" to 'true' (designed to work with a lightsail load balancer with a security certificate). The script  basically pulls this code from github and runs docker-compose, so if you're pulling from your own repo you'll have to go through the .sh files and change the address it curls from. Obviously pulling from a public repo is sub-optimal for a real project, so some alternative deployment will have to be done .. alter the script to curl from a private repo, or create an image when you're ready to deply and change the script to download from Dockerhub, or some other method.
