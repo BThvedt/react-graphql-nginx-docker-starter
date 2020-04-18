@@ -8,15 +8,18 @@ import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost";
 import { setContext } from "apollo-link-context";
 import { ApolloProvider } from "react-apollo";
 
-let httpUrl = "http://localhost";
+let httpUrl = "";
+
+console.log(process.env.REACT_APP_USE_HTTPS);
+let protocol = process.env.REACT_APP_USE_HTTPS === "true" ? "https" : "http";
 
 // next goal: If environment is local, do authentication with
 // tolkens and not cookies
 
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "local") {
-  httpUrl = `http://${process.env.REACT_APP_API_URL}`;
+  httpUrl = `${protocol}://${process.env.REACT_APP_API_URL}`;
 } else if (process.env.NODE_ENV === "development") {
-  httpUrl = "http://localhost:9000";
+  httpUrl = "http://localhost:9000"; // always just use http
 }
 
 const httpLink = new HttpLink({ uri: httpUrl, credentials: "include" });

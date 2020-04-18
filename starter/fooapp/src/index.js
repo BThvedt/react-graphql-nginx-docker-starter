@@ -9,12 +9,15 @@ import { ApolloProvider } from "react-apollo";
 
 import * as serviceWorker from "./serviceWorker";
 
-let httpUrl = "http://localhost";
+let httpUrl = "";
+
+console.log(process.env.REACT_APP_USE_HTTPS);
+let protocol = process.env.REACT_APP_USE_HTTPS === "true" ? "https" : "http";
 
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "local") {
-  httpUrl = `http://${process.env.REACT_APP_API_URL}`;
+  httpUrl = `${protocol}://${process.env.REACT_APP_API_URL}`;
 } else if (process.env.NODE_ENV === "development") {
-  httpUrl = "http://localhost:9000";
+  httpUrl = "http://localhost:9000"; // always use ust http here
 }
 
 const httpLink = new HttpLink({ uri: httpUrl, credentials: "include" });

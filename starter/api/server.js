@@ -10,6 +10,7 @@ const jwtSecret = "superSecretJwtSecret";
 
 console.log(process.env.NODE_ENV);
 console.log(process.env);
+let protocol = process.env.USE_HTTPS === "true" ? "https" : "http";
 
 let enforceCors = true;
 let useCookie = true;
@@ -21,9 +22,9 @@ if (process.env.NODE_ENV != "local" && process.env.NODE_ENV != "production") {
 } else {
   enforceCors = true;
   whitelist = [
-    `http://${process.env.FOOAPP_URL}`,
-    `http://${process.env.BARAPP_URL}`,
-    `http://${process.env.API_URL}`,
+    `${protocol}://${process.env.FOOAPP_URL}`,
+    `${protocol}://${process.env.BARAPP_URL}`,
+    `${protocol}://${process.env.API_URL}`,
   ];
 }
 

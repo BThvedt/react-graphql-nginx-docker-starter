@@ -2,7 +2,9 @@ FROM node:alpine as builder
 WORKDIR /app
 COPY . ./
 ARG API_URL
+ARG HTTPS
 ENV REACT_APP_API_URL=$API_URL
+ENV REACT_APP_USE_HTTPS=$HTTPS
 RUN npm install
 RUN npm run build
 
