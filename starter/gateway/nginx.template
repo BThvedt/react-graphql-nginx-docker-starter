@@ -7,55 +7,95 @@ http {
 
     server {
         listen 80;
+		listen 443;
 		server_name ${FOOAPP_URL};
+		set $use_https ${HTTPS};
 
-        #if ($http_x_forwarded_proto != "https") {
-        #    rewrite ^(.*)$ https://${FOOAPP_URL}$1 permanent;
-        #}
+        if ($use_https = true) {
+            set $fooapp_test A;
+        }
+		
+		if ($http_x_forwarded_proto != "https") {
+            set $fooapp_test "${fooapp_test}B";
+        }
+		
+		if ($fooapp_test = AB) {
+            rewrite ^(.*)$ https://${FOOAPP_URL}$1 permanent;
+        }
 
         location / { 
             proxy_pass http://starter_fooapp_1/;
         }
     }
 
-#    server {
-#        listen 443;
-#		server_name ${FOOAPP_URL};
-#
-#        location / {
-#            proxy_pass http://starter_fooapp_1/;
-#        }
-#    }
+    #server {
+	#	listen 443;
+	#	if ($use_https = true) {
+	#		server_name ${FOOAPP_URL};
+	#		
+	#		location / {
+	#			proxy_pass http://starter_fooapp_1/;
+	#		}
+	#	}
+    #}
+    
 	
     server {
         listen 80;
+		listen 443;
 		server_name ${BARAPP_URL};
-
-        #if ($http_x_forwarded_proto != "https") {
-        #    rewrite ^(.*)$ https://${BARAPP_URL}$1 permanent;
-        #}
+		set $use_https ${HTTPS};
+		
+		if ($use_https = true) {
+            set $barapp_test A;
+        }
+		
+		if ($http_x_forwarded_proto != "https") {
+            set $barapp_test "${barapp_test}B";
+        }
+		
+		if ($barapp_test = AB) {
+            rewrite ^(.*)$ https://${BARAPP_URL}$1 permanent;
+        }
 
         location / { 
             proxy_pass http://starter_barapp_1/;
         }
     }
 
-#    server {
-#        listen 443;
-#		server_name ${BARAPP_URL};
-#
-#        location / {
-#            proxy_pass http://starter_barapp_1/;
-#        }
-#    }
+    
+    #server {
+	#	listen 443;
+	#	server_name ${BARAPP_URL};
+	#	
+	#	location / {
+	#		proxy_pass http://starter_barapp_1/;
+	#	}
+    #}
+    
 
     server {
         listen 80;
+		listen 443;
 		server_name ${API_URL};
+		set $use_https ${HTTPS};
 
-    #    if ($http_x_forwarded_proto != "https") {
-    #        rewrite ^(.*)$ https://${API_URL}$1 permanent;
-    #    }
+        #if ($http_x_forwarded_proto != "https") {
+        #    rewrite ^(.*)$ https://${API_URL}$1 permanent;
+        #}
+		
+		if ($use_https = true) { 
+            set $api_test A;
+        }
+		
+		if ($http_x_forwarded_proto != "https") {
+            set $api_test "${api_test}B";
+        }
+		
+		if ($api_test = AB) {
+            rewrite ^(.*)$ https://${API_URL}$1 permanent;
+        }
+
 
         location / {
 			proxy_set_header Host $host;
@@ -66,17 +106,17 @@ http {
         }
     }
 
-#    server {
-#        listen 443;
-#		server_name ${API_URL};
-#
-#        location / {
-#			proxy_set_header Host $host;
-#			proxy_set_header X-Real-IP $remote_addr;
-#			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-#			proxy_set_header X-Forwarded-Proto $scheme;
-#            proxy_pass http://starter_api_1/;
-#        }
-#    }
-
+    
+    #server {
+    #    listen 443;
+    #    server_name ${API_URL};
+    #
+    #    location / {
+    #        proxy_set_header Host $host;
+    #        proxy_set_header X-Real-IP $remote_addr;
+    #        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #        proxy_set_header X-Forwarded-Proto $scheme;
+    #        proxy_pass http://starter_api_1/;
+    #    }
+    #}
 }

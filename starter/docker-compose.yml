@@ -6,6 +6,7 @@ services:
       context: ./fooapp
       args:
         API_URL: ${API_URL}
+        HTTPS: ${HTTPS}
     networks:
       - dummynetwork
 
@@ -13,7 +14,8 @@ services:
     build:
       context: ./barapp
       args:
-        API_URL: ${API_URL}   
+        API_URL: ${API_URL}
+        HTTPS: ${HTTPS}        
     networks:
       - dummynetwork
 
@@ -25,6 +27,7 @@ services:
       - BARAPP_URL=${BARAPP_URL}
       - API_URL=${API_URL}
       - NODE_ENV=${NODE_ENV} 
+      - HTTPS=${HTTPS} 
     networks:
       - dummynetwork
 
@@ -39,7 +42,8 @@ services:
       - BARAPP_URL=${BARAPP_URL}
       - API_URL=${API_URL}
       - NODE_ENV=${NODE_ENV} 
-    command: /bin/bash -c "envsubst '$${FOOAPP_URL},$${BARAPP_URL},$${API_URL}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+      - HTTPS=${HTTPS} 
+    command: /bin/bash -c "envsubst '$${FOOAPP_URL},$${BARAPP_URL},$${API_URL},$${HTTPS}' < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     networks:
       - dummynetwork
     depends_on:
