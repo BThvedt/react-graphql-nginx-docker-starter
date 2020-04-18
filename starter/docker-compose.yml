@@ -27,7 +27,7 @@ services:
       - BARAPP_URL=${BARAPP_URL}
       - API_URL=${API_URL}
       - NODE_ENV=${NODE_ENV} 
-      - HTTPS=${HTTPS} 
+      - USE_HTTPS=${HTTPS} 
     networks:
       - dummynetwork
 
