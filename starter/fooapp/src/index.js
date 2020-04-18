@@ -13,6 +13,8 @@ let httpUrl = "";
 
 console.log(process.env.REACT_APP_USE_HTTPS);
 let protocol = process.env.REACT_APP_USE_HTTPS === "true" ? "https" : "http";
+console.log("PROTOCOL IS");
+console.log(protocol);
 
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "local") {
   httpUrl = `${protocol}://${process.env.REACT_APP_API_URL}`;

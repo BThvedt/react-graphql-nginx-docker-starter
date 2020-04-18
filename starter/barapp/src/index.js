@@ -12,6 +12,8 @@ let httpUrl = "";
 
 console.log(process.env.REACT_APP_USE_HTTPS);
 let protocol = process.env.REACT_APP_USE_HTTPS === "true" ? "https" : "http";
+console.log("PROTOCOL IS");
+console.log(protocol);
 
 // next goal: If environment is local, do authentication with
 // tolkens and not cookies
