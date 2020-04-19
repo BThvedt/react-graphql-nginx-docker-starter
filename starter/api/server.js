@@ -8,15 +8,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const jwtSecret = "superSecretJwtSecret";
 
-console.log("********************");
-console.log(process.env.NODE_ENV);
-console.log(process.env);
-console.log("USE HTTPS IS");
-console.log(process.env.USE_HTTPS);
-console.log(typeof process.env.USE_HTTPS);
 let protocol = process.env.USE_HTTPS === "true" ? "https" : "http";
-console.log(protocol);
-console.log("********************");
 
 let enforceCors = true;
 let useCookie = true;
@@ -33,9 +25,6 @@ if (process.env.NODE_ENV != "local" && process.env.NODE_ENV != "production") {
     `${protocol}://${process.env.API_URL}`,
   ];
 }
-
-console.log("WHITELIST IS");
-console.log(whitelist);
 
 const corsOptions = {
   origin: function (origin, callback) {

@@ -99,6 +99,7 @@ module.exports = {
       );
       res.cookie("jwt", newCookie, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
       });
 
       return true;
