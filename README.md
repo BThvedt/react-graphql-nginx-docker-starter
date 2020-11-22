@@ -1,10 +1,8 @@
 ## Overview
-Very much a work in progress, this project is my desire to have a starter for a web platform with multiple frontends, a single api gateway that can be built on top of that can then be connected to whatever services or microservices to my heart's desire. Also I wanted it to be modular so each section can be worked on independently, and deployable in minutes, with baked-in auth and HTTPS. It should be scalable, easy to hook into other hosted services or microservices, and all those good things.
-What this is then, is two very simple react apps built with create-react-app, an Apolloserver/express api gateway with all the those things.. the baked in auth, the HTTPS, etc etc that's designed to be deployed to Amazon's lighsail.
-I'm at a stopping point for now, working on a more customized version to my taste on my private repo, but more could be done to this. 
+I made this before I knew about kubernetes. I was just learning about docker, coming from a self-trained background with mixed success making small websites for people and doing some frontend work and contracting, and I wanted a template that would deploy a couple frontend apps and a graphql gateway to a cheap $5/month aws lightsail instance with secure cookies for deployment but jws for local development. 
 
 ## To Do
-Modularize the graphql code, maybe include subscriptions, find a better method other than puliing code off a public repo (undeseriable in real project) maybe figure out how to include instructions to make an image on dockerhub and pull from there or something... 
+A lot of stuff
 But I don't want to get too complicated! Also it won't work on Ubuntu 18 (only 16) and I haven't figured out why yet
 
 ## Usage
@@ -32,13 +30,13 @@ docker-compose up
 ```
 Bingo! After everything starts you should be able to navigate to the urls you set up and see 'fooapp' and 'barapp' and you should be able to sign in and out of each. Because the auth is using cookies, singing into one app will sign you into both, but each one has an example of a route that's protected on the front and back end available only to 'foouser' or 'baruser'.
 
-## Development
-First, make a new repo of your own, push the starter code to it, and now you've got your own project. Each react app can be run in development mode wtih ```npm start``` inside their respective root folders and you can also go into the api gateway folder and run ```node server```  (or more preferbilly with nodemon if you install that) to spin that up. You do kinda gotta go into the folders and all the files and change the names to what you want. In development mode, the auth switches from cookie based to tolken based to make authenticated queries easier, and the graphql playgrond can be accessed at localhost:9000 when the gateway is running. The apps run at localhost:3000 and localhost:4000 when you start them up.
+## Development - as it stands
+Make a new repo, push the starter code to it. Each react app can be run in development mode wtih ```npm start``` inside their respective root folders and you can also go into the api gateway folder and run ```node server```  (or install nodemon and ues that). It would be necessary to go into the folders and all the files and change the names to what you want. In development mode, the auth switches from cookie based to tolken based to make authenticated queries easier, and the graphql playgrond can be accessed at localhost:9000 when the gateway is running. The apps run at localhost:3000 and localhost:4000 when started up.
 
 ## Deployment
-I am using Amazon Lightsail - an easy to use hosting service. I believe that this can be spun up and pretty heavily scaled with only basic services like this. So to deploy, go get an AWS account, configure a domain and some subdomains, go into lightsail, create a static IP, and then get ready to start up. If you want HTTPS you'll have to configure a load-balancer and point your domain at that, but it's easy to do on Lightsail and Amazon has a blog on how to do it.
+Designed to be uses with Amazon lighsail. To deploy, go to AWS account, configure a domain and some subdomains in route53, go into lightsail, create a static IP, and then get ready to start it up. If you want HTTPS I'm doing it with a load balancer, but there's other ways to configure HTTPS for lightsail with certbot there's like blogs and stuff on it
 
-When you start up your instance, choose Ubuntu 16.06 and copy the contents of the lightsail-startup-script.sh file into the section where it says startup script. Change the lines where it exports variables to your own values like this:
+When starting up the instance, choose Ubuntu 16.06 and copy the contents of the lightsail-startup-script.sh file into the section where it says startup script. Change the lines where it exports variables to use whatever values like this:
 ```
 FOOAPP_URL=domainnamehere.com
 BARAPP_URL=barapp.domainnamehere.com
@@ -46,5 +44,5 @@ API_URL=api.domainnamehere.com
 NODE_ENV=production
 HTTPS=false
 ```
-Make sure you chooe the $5/month instance or greater, as the cheapest instance doesn't have enough memory to start up the various docker containers. 
-If you want HTTPS, change "HTTPS" to 'true' (designed to work with a lightsail load balancer with a security certificate). The script  basically pulls this code from github and runs docker-compose, so if you're pulling from your own repo you'll have to go through the .sh files and change the address it curls from. Obviously pulling from a public repo is sub-optimal for a real project, so some alternative deployment will have to be done .. alter the script to curl from a private repo, or create an image when you're ready to deply and change the script to download from Dockerhub, or some other method.
+Make sure to chooe the $5/month instance or greater, as the cheapest instance doesn't have enough memory to start up the various docker containers. 
+Also for HTTPS, change "HTTPS" to 'true' (designed to work with a lightsail load balancer with a security certificate). The script basically pulls this code from github and runs docker-compose, so if you're pulling from a differnt repo you'll have to go through the .sh files and change the address it curls from. Obviously pulling from a public repo is sub-optimal for a real project, so some alternative deployment will have to be done .. maybe a private repo, maybe use dockerhub.. haven't quite gotten there yet 
